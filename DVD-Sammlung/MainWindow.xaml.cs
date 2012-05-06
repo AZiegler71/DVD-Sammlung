@@ -88,6 +88,8 @@ namespace DvdCollection
 
         private void SearchTextChanged (object sender, TextChangedEventArgs args)
         {
+            string text = (sender as TextBox).Text;
+            m_movies.ApplyFilter (text);
         }
 
         private DvdReader m_dvdReader;
