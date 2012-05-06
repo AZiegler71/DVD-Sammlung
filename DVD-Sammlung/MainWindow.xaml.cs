@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using DvdCollection.PersistentList;
 using DvdCollection.Properties;
 
@@ -78,6 +79,14 @@ namespace DvdCollection
         }
 
         private void CompleteFromDatabase (object sender, RoutedEventArgs args)
+        {
+        }
+
+        private void CompareDbWithFolder (object sender, RoutedEventArgs args)
+        {
+        }
+
+        private void SearchTextChanged (object sender, TextChangedEventArgs args)
         {
         }
 

@@ -46,59 +46,68 @@
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Left" Width="300">
-            <Button HorizontalAlignment="Center" Margin="0,16,0,4" Width="120" Click="AddDvdClick">
+            <Button HorizontalAlignment="Center" Margin="0,16,0,4" Width="160" Click="AddDvdClick">
                 DVD hinzufügen
             </Button>
-            <Button HorizontalAlignment="Center" Margin="0,4,0,16" Width="120" Click="CompleteFromDatabase">
+            <Button HorizontalAlignment="Center" Margin="0,4,0,4" Width="160" Click="CompleteFromDatabase">
                 Von DB aktualisieren
+            </Button>
+            <Button HorizontalAlignment="Center" Margin="0,4,0,16" Width="160" Click="CompareDbWithFolder">
+                DB mit Ordner vergleichen
             </Button>
         </StackPanel>
 
-        <local:SortableGridView Margin="16" MinWidth="300" MinHeight="200"
-                                ColumnHeaderSortedAscendingTemplate="HeaderTemplateArrowUp" 
-                                ColumnHeaderSortedDescendingTemplate="HeaderTemplateArrowDown"
-                                ColumnHeaderNotSortedTemplate="HeaderTemplateTransparent"
-                                ItemsSource="{Binding Movies}">
-            <local:SortableGridView.View>
-                <GridView ColumnHeaderTemplate="{StaticResource HeaderTemplateTransparent}">
-                    <local:SortableGridViewColumn Header="Titel" Width="300" 
+        <StackPanel Margin="16" MinWidth="300">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Suchen" Margin="0,0,8,0" />
+                <TextBox TextChanged="SearchTextChanged" Width="240" />
+            </StackPanel>
+            <local:SortableGridView MinHeight="200" Margin="0,8,0,0"
+                                    ColumnHeaderSortedAscendingTemplate="HeaderTemplateArrowUp" 
+                                    ColumnHeaderSortedDescendingTemplate="HeaderTemplateArrowDown"
+                                    ColumnHeaderNotSortedTemplate="HeaderTemplateTransparent"
+                                    ItemsSource="{Binding Movies}">
+                <local:SortableGridView.View>
+                    <GridView ColumnHeaderTemplate="{StaticResource HeaderTemplateTransparent}">
+                        <local:SortableGridViewColumn Header="Titel" Width="300" 
                                                   DisplayMemberBinding="{Binding Title}"
                                                   SortPropertyName="{x:Static local:SortableGridView.DEFAULT_SORT_ID}"
                                                   IsDefaultSortColumn="true" />
-                    <local:SortableGridViewColumn Header="Genres" Width="150" 
+                        <local:SortableGridViewColumn Header="Genres" Width="150" 
                                                   DisplayMemberBinding="{Binding Genres}"
                                                   SortPropertyName="Genres" 
                                                   IsDefaultSortColumn="false" />
-                    <GridViewColumn Header="Beschreibung" Width="300" 
+                        <GridViewColumn Header="Beschreibung" Width="300" 
                                     DisplayMemberBinding="{Binding Description}" />
-                    <local:SortableGridViewColumn Header="Bewertung [%]" Width="100" 
+                        <local:SortableGridViewColumn Header="Bewertung [%]" Width="100" 
                                                   DisplayMemberBinding="{Binding Rating}"
                                                   SortPropertyName="Rating" 
                                                   IsDefaultSortColumn="false" />
-                    <GridViewColumn Header="Cover" Width="Auto">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image Source="{Binding CoverPath}" Stretch="None" Margin="1"
+                        <GridViewColumn Header="Cover" Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding CoverPath}" Stretch="None" Margin="1"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <local:SortableGridViewColumn Header="DVD" Width="70" 
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <local:SortableGridViewColumn Header="DVD" Width="70" 
                                                   DisplayMemberBinding="{Binding DvdName}"
                                                   SortPropertyName="DvdName" 
                                                   IsDefaultSortColumn="false" />
-                    <GridViewColumn Header="Bildgröße" Width="70" 
+                        <GridViewColumn Header="Bildgröße" Width="70" 
                                     DisplayMemberBinding="{Binding Size}" />
-                    <local:SortableGridViewColumn Header="Auflösung [Px]" Width="100" 
+                        <local:SortableGridViewColumn Header="Auflösung [Px]" Width="100" 
                                                   DisplayMemberBinding="{Binding Resolution}"
                                                   SortPropertyName="Resolution" 
                                                   IsDefaultSortColumn="false" />
-                    <local:SortableGridViewColumn Header="Dauer [min]" Width="70" 
+                        <local:SortableGridViewColumn Header="Dauer [min]" Width="70" 
                                                   DisplayMemberBinding="{Binding Duration}"
                                                   SortPropertyName="Duration" 
                                                   IsDefaultSortColumn="false" />
-                </GridView>
-            </local:SortableGridView.View>
-        </local:SortableGridView>
+                    </GridView>
+                </local:SortableGridView.View>
+            </local:SortableGridView>
+        </StackPanel>
     </DockPanel>
 </Window>

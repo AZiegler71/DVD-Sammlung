@@ -59,6 +59,13 @@ namespace DvdCollection.PersistentList
                 }
             }
 
+            // Write into the new database structure
+            //CreateDatabase ();
+            //foreach (MovieInfo info in result)
+            //{
+            //    Add (info);
+            //}
+
             return result;
         }
 

@@ -10,13 +10,10 @@ namespace DvdCollection
 {
     public class DvdReader
     {
-        public DvdReader ()
-        {
-            AskDvdPath ();
-        }
-
         public List<MovieInfo> ReadDvd ()
         {
+            EnsureDvdPathExists ();
+
             bool aborted;
             string dvdLocation = GetDvdNameFromUser (out aborted);
             if (aborted)
@@ -98,8 +95,13 @@ namespace DvdCollection
             return null;
         }
 
-        private void AskDvdPath ()
+        private void EnsureDvdPathExists ()
         {
+            if (m_path != null)
+            {
+                return;
+            }
+
             bool canceled;
             string result = Utils.GetFolderFromUser ("DVD-Stammverzeichnis auswählen", out canceled);
             if (!canceled)
