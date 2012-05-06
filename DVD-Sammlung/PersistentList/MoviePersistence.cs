@@ -37,19 +37,19 @@ namespace DvdCollection.PersistentList
                         {
                             MovieFileData fileData = new MovieFileData ()
                             {
-                                Duration = reader.GetDouble (8),
-                                X = reader.GetInt32 (6),
-                                Y = reader.GetInt32 (7)
+                                Duration = reader.GetDouble (7),
+                                X = reader.GetInt32 (5),
+                                Y = reader.GetInt32 (6)
                             };
 
-                            string rawTitlePath = reader.GetString (9);
-                            string dvdName = reader.GetString (5);
+                            string rawTitlePath = reader.GetString (8);
+                            string dvdName = reader.GetString (4);
                             MovieInfo info = new MovieInfo (rawTitlePath, dvdName, fileData)
                             {
-                                CoverImage = null,// BitmapSource.Create (reader.GetBytes (4))
-                                Description = reader.GetString (2),
-                                Genres = reader.GetString (1),
-                                Rating = reader.GetString (3)
+                                CoverImage = null,// BitmapSource.Create (reader.GetBytes (3))
+                                Description = reader.GetString (1),
+                                Genres = reader.GetString (0),
+                                Rating = reader.GetString (2)
                             };
 
                             result.Add (info);
@@ -65,8 +65,8 @@ namespace DvdCollection.PersistentList
         internal static void Add (MovieInfo movieInfo)
         {
             string commandText = @"INSERT INTO MOVIE_DATA (
-                                    TITLE, LOCATION, FILE_DATA_X, FILE_DATA_Y, FILE_DATA_DURATION, RAW_TITLE_PATH) 
-                                    VALUES (@title, @location, @file_data_x, @file_data_y, @file_duration, @raw_title_path)";
+                                    LOCATION, FILE_DATA_X, FILE_DATA_Y, FILE_DATA_DURATION, RAW_TITLE_PATH) 
+                                    VALUES (@location, @file_data_x, @file_data_y, @file_duration, @raw_title_path)";
 
             using (FbConnection connection = new FbConnection (string.Format (CONNECTION_STRING_FORMAT_FIREBIRD, DB_FILENAME)))
             {
@@ -97,7 +97,7 @@ namespace DvdCollection.PersistentList
         {
             SqlCommand command = new SqlCommand ();
             command.CommandText = @"INSERT INTO MOVIE_DATA (
-                                    TITLE, LOCATION, FILE_DATA_X, FILE_DATA_Y, FILE_DATA_DURATION, RAW_TITLE_PATH) 
+                                    LOCATION, FILE_DATA_X, FILE_DATA_Y, FILE_DATA_DURATION, RAW_TITLE_PATH) 
                                     VALUES ('Los Angeles', 900, '10.Jan.1999')";
             command.Parameters.Add (new SqlParameter ("@PROD_ID", 100));
 
@@ -147,7 +147,6 @@ namespace DvdCollection.PersistentList
             List<string> statements = new List<string> ();
 
             statements.Add (@"CREATE TABLE MOVIE_DATA (
-                                TITLE VARCHAR(200) NOT NULL,
                                 GENRES VARCHAR(300),
                                 DESCRIPTION VARCHAR(1000),
                                 RATING VARCHAR(200), 
