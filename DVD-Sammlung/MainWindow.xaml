@@ -7,19 +7,6 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Window.Resources>
-        <Style x:Key="gridViewHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Background" Value="AliceBlue" />
-        </Style>
-        
-        <Style x:Key="headLinesGridViewStyle" TargetType="{x:Type ListViewItem}">
-            <Setter Property="Foreground" Value="Magenta" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="Background" Value="Green"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        
         <DataTemplate x:Key="HeaderTemplateArrowUp">
             <DockPanel>
                 <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
@@ -59,14 +46,12 @@
         </StackPanel>
         
         <local:SortableGridView Margin="8" MinWidth="300" MinHeight="200"
-                                ItemContainerStyle="{StaticResource headLinesGridViewStyle}"
                                 ColumnHeaderSortedAscendingTemplate="HeaderTemplateArrowUp" 
                                 ColumnHeaderSortedDescendingTemplate="HeaderTemplateArrowDown"
                                 ColumnHeaderNotSortedTemplate="HeaderTemplateTransparent"
                                 ItemsSource="{Binding MovieList}">
             <local:SortableGridView.View>
-                <GridView ColumnHeaderContainerStyle="{StaticResource gridViewHeaderStyle}"
-                          ColumnHeaderTemplate="{StaticResource HeaderTemplateTransparent}">
+                <GridView ColumnHeaderTemplate="{StaticResource HeaderTemplateTransparent}">
                     <local:SortableGridViewColumn Header="Titel" Width="Auto" 
                                                   DisplayMemberBinding="{Binding Title}"
                                                   SortPropertyName="Title" 

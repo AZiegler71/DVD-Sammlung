@@ -8,7 +8,7 @@ namespace DvdCollection
         public string Title
         {
             get { return m_title; }
-            private set
+            set
             {
                 m_title = value;
                 if (PropertyChanged != null)
@@ -22,7 +22,7 @@ namespace DvdCollection
         public string Dvd
         {
             get { return m_dvd; }
-            private set
+            set
             {
                 m_dvd = value;
                 if (PropertyChanged != null)
@@ -36,7 +36,7 @@ namespace DvdCollection
         public string Genre
         {
             get { return m_genre; }
-            private set
+            set
             {
                 m_genre = value;
                 if (PropertyChanged != null)

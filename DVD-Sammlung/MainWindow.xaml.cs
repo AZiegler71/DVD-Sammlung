@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 
@@ -26,8 +27,9 @@ namespace DvdCollection
         public MainWindow ()
         {
             InitializeComponent ();
-            MovieList = new ObservableCollection<MovieInfo> ();
 
+            List<MovieInfo> movies = MoviePersistence.LoadMovies ();
+            MovieList = new ObservableCollection<MovieInfo> (movies);
         }
 
         #region INotifyPropertyChanged Members
