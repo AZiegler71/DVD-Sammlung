@@ -8,12 +8,7 @@ namespace DvdCollection.PersistentList
     {
         public void LoadAll ()
         {
-            List<MovieInfo> movies = MoviePersistence.LoadMovies ();
-            foreach (MovieInfo info in movies)
-            {
-                m_fullList.Add (info);
-            }
-
+            m_fullList = MoviePersistence.LoadMovies ();
             ApplyFilter (string.Empty);
         }
 

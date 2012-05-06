@@ -10,7 +10,8 @@
         Height="900"
         MinWidth="800"
         MinHeight="600"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        WindowState="Maximized">
 
     <Window.Resources>
         <DataTemplate x:Key="HeaderTemplateArrowUp">
@@ -57,7 +58,7 @@
             </Button>
         </StackPanel>
 
-        <DockPanel Margin="16" MinWidth="300">
+        <DockPanel Margin="16,16,2,16" MinWidth="300">
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
                 <TextBlock Text="Suchen" Margin="0,0,8,0" />
                 <TextBox Name="searchTextBox" TextChanged="SearchTextChanged" Width="240" />

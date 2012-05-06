@@ -68,7 +68,7 @@ namespace DvdCollection
 
         private void AddDvdClick (object sender, RoutedEventArgs args)
         {
-            List<MovieInfo> newEntries = m_dvdReader.ReadDvd (true);
+            List<MovieInfo> newEntries = m_dvdReader.ReadDvd (false);
             if (newEntries == null)
             {
                 return;
