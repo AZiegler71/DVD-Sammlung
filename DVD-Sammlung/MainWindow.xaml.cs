@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using DvdCollection.PersistentList;
+using DvdCollection.Properties;
 
 namespace DvdCollection
 {
@@ -33,6 +34,12 @@ namespace DvdCollection
             InitializeComponent ();
 
             Loaded += new RoutedEventHandler (MainWindowLoaded);
+        }
+
+        protected override void OnClosing (CancelEventArgs e)
+        {
+            base.OnClosing (e);
+            Settings.Default.Save ();
         }
 
         private void MainWindowLoaded (object sender, RoutedEventArgs e)

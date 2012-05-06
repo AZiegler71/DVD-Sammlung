@@ -22,5 +22,17 @@ namespace DvdCollection.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastLocation {
+            get {
+                return ((string)(this["LastLocation"]));
+            }
+            set {
+                this["LastLocation"] = value;
+            }
+        }
     }
 }

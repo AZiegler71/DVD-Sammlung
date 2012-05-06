@@ -91,6 +91,7 @@ namespace DvdCollection
         {
             aborted = true;
             AskMovieLocationDialog dialog = new AskMovieLocationDialog ();
+            dialog.Owner = Application.Current.MainWindow;
             dialog.ShowDialog ();
             if (dialog.DialogResult == true)
             {

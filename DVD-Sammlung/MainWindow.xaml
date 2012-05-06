@@ -83,7 +83,7 @@
                     </GridViewColumn>
                     <local:SortableGridViewColumn Header="DVD" Width="70" 
                                                   DisplayMemberBinding="{Binding DvdName}"
-                                                  SortPropertyName="Dvd" 
+                                                  SortPropertyName="DvdName" 
                                                   IsDefaultSortColumn="false" />
                     <GridViewColumn Header="Auflösung" Width="70" 
                                     DisplayMemberBinding="{Binding Resolution}" />

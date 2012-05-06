@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using DvdCollection.Properties;
 
 namespace DvdCollection
 {
@@ -17,7 +18,7 @@ namespace DvdCollection
         {
             InitializeComponent ();
 
-            location.Text = "";
+            location.Text = Settings.Default.LastLocation;
             location.Focus ();
             okButton.IsEnabled = false;
         }
@@ -31,6 +32,7 @@ namespace DvdCollection
         private void OkOnClick (object sender, RoutedEventArgs e)
         {
             DialogResult = true;
+            Settings.Default.LastLocation = DvdName;
             Close ();
         }
     }
