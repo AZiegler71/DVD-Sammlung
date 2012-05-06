@@ -10,7 +10,7 @@ namespace DvdCollection.PersistentList
             List<MovieInfo> movies = MoviePersistence.LoadMovies ();
             foreach (MovieInfo info in movies)
             {
-                this.Add (info);
+                base.Add (info);
             }
         }
 

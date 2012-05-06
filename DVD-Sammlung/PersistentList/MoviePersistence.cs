@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using FirebirdSql.Data.FirebirdClient;
 
@@ -9,6 +10,8 @@ namespace DvdCollection.PersistentList
     /// </summary>
     internal static class MoviePersistence
     {
+        #region public methods
+
         internal static List<MovieInfo> LoadMovies ()
         {
             if (!File.Exists (DB_FILENAME))
@@ -17,18 +20,101 @@ namespace DvdCollection.PersistentList
                 return new List<MovieInfo> ();
             }
 
-            //...
+            List<MovieInfo> result = new List<MovieInfo> ();
 
-            return new List<MovieInfo> ();
-        }
+            string commandText = @"SELECT * FROM MOVIE_DATA;";
 
-        internal static void Delete (MovieInfo movieInfo)
-        {
+            using (FbConnection connection = new FbConnection (string.Format (CONNECTION_STRING_FORMAT_FIREBIRD, DB_FILENAME)))
+            {
+                connection.Open ();
+
+                using (FbTransaction transaction = connection.BeginTransaction ())
+                {
+                    using (FbCommand cmd = new FbCommand (commandText, connection, transaction))
+                    {
+                        FbDataReader reader = cmd.ExecuteReader ();
+                        while (reader.Read ())
+                        {
+                            MovieFileData fileData = new MovieFileData ()
+                            {
+                                Duration = reader.GetDouble (8),
+                                X = reader.GetInt32 (6),
+                                Y = reader.GetInt32 (7)
+                            };
+
+                            string title = reader.GetString (0);
+                            string dvdName = reader.GetString (5);
+                            MovieInfo info = new MovieInfo (title, dvdName, fileData)
+                            {
+                                CoverImage = null,// BitmapSource.Create (reader.GetBytes (4))
+                                Description = reader.GetString (2),
+                                Genres = reader.GetString (1),
+                                Rating = reader.GetString (3),
+                                RawTitlePath = reader.GetString (9)
+                            };
+
+                            result.Add (info);
+                        }
+                    }
+                    transaction.Commit ();
+                }
+            }
+
+            return result;
         }
 
         internal static void Add (MovieInfo movieInfo)
         {
+            string commandText = @"INSERT INTO MOVIE_DATA (
+                                    TITLE, LOCATION, FILE_DATA_X, FILE_DATA_Y, FILE_DATA_DURATION, RAW_TITLE_PATH) 
+                                    VALUES (@title, @location, @file_data_x, @file_data_y, @file_duration, @raw_title_path)";
+
+            using (FbConnection connection = new FbConnection (string.Format (CONNECTION_STRING_FORMAT_FIREBIRD, DB_FILENAME)))
+            {
+                connection.Open ();
+
+                using (FbTransaction transaction = connection.BeginTransaction ())
+                {
+                    using (FbCommand cmd = new FbCommand (commandText, connection, transaction))
+                    {
+                        cmd.Parameters.Add (new FbParameter ("@title", movieInfo.Title));
+                        cmd.Parameters.Add (new FbParameter ("@location", movieInfo.DvdName));
+                        cmd.Parameters.Add (new FbParameter ("@file_data_x", movieInfo.FileData.X));
+                        cmd.Parameters.Add (new FbParameter ("@file_data_y", movieInfo.FileData.Y));
+                        cmd.Parameters.Add (new FbParameter ("@file_duration", movieInfo.FileData.Duration));
+                        cmd.Parameters.Add (new FbParameter ("@raw_title_path", movieInfo.RawTitlePath));
+
+                        cmd.ExecuteNonQuery ();
+                    }
+                    transaction.Commit ();
+                }
+            }
         }
+
+        internal static void Delete (MovieInfo movieInfo)
+        {//new FirebirdSql.Data.FirebirdClient.FbCommandBuilder().
+        }
+
+        internal static void Update (MovieInfo movieInfo)
+        {
+            SqlCommand command = new SqlCommand ();
+            command.CommandText = @"INSERT INTO MOVIE_DATA (
+                                    TITLE, LOCATION, FILE_DATA_X, FILE_DATA_Y, FILE_DATA_DURATION, RAW_TITLE_PATH) 
+                                    VALUES ('Los Angeles', 900, '10.Jan.1999')";
+            command.Parameters.Add (new SqlParameter ("@PROD_ID", 100));
+
+
+
+            //JpegBitmapEncoder encoder = new JpegBitmapEncoder ();
+            //encoder.Frames.Add (BitmapFrame.Create (bmSource));
+            //MemoryStream stream = new MemoryStream ();
+            //encoder.Save (stream);
+
+        }
+
+        #endregion
+
+        #region private methods
 
         private static void CreateDatabase ()
         {
@@ -79,7 +165,13 @@ namespace DvdCollection.PersistentList
             return statements;
         }
 
+        #endregion
+
+        #region private fields
+
         private static readonly string CONNECTION_STRING_FORMAT_FIREBIRD = "User=u;Password=p;Database={0};Port=3050;Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=1;";
         private static readonly string DB_FILENAME = "dvd.fdb";
+
+        #endregion
     }
 }

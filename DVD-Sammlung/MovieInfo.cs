@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace DvdCollection
 {
@@ -66,16 +67,16 @@ namespace DvdCollection
             }
         }
 
-        private string m_coverPath;
-        public string CoverPath
+        private BitmapSource m_coverImage;
+        public BitmapSource CoverImage
         {
-            get { return m_coverPath; }
+            get { return m_coverImage; }
             set
             {
-                m_coverPath = value;
+                m_coverImage = value;
                 if (PropertyChanged != null)
                 {
-                    PropertyChanged (this, new PropertyChangedEventArgs ("CoverPath"));
+                    PropertyChanged (this, new PropertyChangedEventArgs ("CoverImage"));
                 }
             }
         }
