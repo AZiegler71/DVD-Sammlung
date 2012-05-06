@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
+using System;
 
 namespace DvdCollection
 {
@@ -19,22 +20,6 @@ namespace DvdCollection
             }
         }
 
-        public string DbRelevantTitle { get; set; }
-
-        private string m_dvd;
-        public string Dvd
-        {
-            get { return m_dvd; }
-            set
-            {
-                m_dvd = value;
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged (this, new PropertyChangedEventArgs ("Dvd"));
-                }
-            }
-        }
-
         private string m_genres;
         public string Genres
         {
@@ -45,6 +30,34 @@ namespace DvdCollection
                 if (PropertyChanged != null)
                 {
                     PropertyChanged (this, new PropertyChangedEventArgs ("Genres"));
+                }
+            }
+        }
+
+        private string m_description;
+        public string Description
+        {
+            get { return m_description; }
+            set
+            {
+                m_description = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged (this, new PropertyChangedEventArgs ("Description"));
+                }
+            }
+        }
+
+        private string m_rating;
+        public string Rating
+        {
+            get { return m_rating; }
+            set
+            {
+                m_rating = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged (this, new PropertyChangedEventArgs ("Rating"));
                 }
             }
         }
@@ -63,18 +76,52 @@ namespace DvdCollection
             }
         }
 
-        private string m_description;
-        public string Description
+        private string m_dvd;
+        public string Dvd
         {
-            get { return m_description; }
+            get { return m_dvd; }
             set
             {
-                m_description = value;
+                m_dvd = value;
                 if (PropertyChanged != null)
                 {
-                    PropertyChanged (this, new PropertyChangedEventArgs ("Description"));
+                    PropertyChanged (this, new PropertyChangedEventArgs ("Dvd"));
                 }
             }
+        }
+
+        public string Resolution
+        {
+            get { return string.Format ("{0}x{1}", FileData.X.ToString (), FileData.Y.ToString ()); }
+        }
+
+        public int Duration
+        {
+            get { return (int) Math.Round (FileData.Duration); }
+        }
+
+        private MovieFileData m_fileData;
+        public MovieFileData FileData
+        {
+            get { return m_fileData; }
+            private set
+            {
+                m_fileData = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged (this, new PropertyChangedEventArgs ("Resolution"));
+                    PropertyChanged (this, new PropertyChangedEventArgs ("Duration"));
+                }
+            }
+        }
+
+        public string DbRelevantTitle { get; set; }
+
+        public MovieInfo (string title, string dvd, MovieFileData fileData)
+        {
+            Title = title;
+            Dvd = dvd;
+            FileData = fileData;
         }
 
         #region INotifyPropertyChanged Members

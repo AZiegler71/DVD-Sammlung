@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Linq;
 
 namespace DvdCollection
 {
@@ -44,8 +45,26 @@ namespace DvdCollection
 
             foreach (MovieInfo info in newEntries)
             {
+                MovieInfo existingInfo = (from x in MovieList
+                                          where x.Title == info.Title
+                                          select x).FirstOrDefault ();
+                if (existingInfo != null)
+                {
+                    if (MessageBox.Show ("Es gibt schon einen Eintrag des Films \"{0}\" (DVD {1}).\n\nSoll der Eintrag überschrieben werden?",
+                        "Überschreiben?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                    {
+                        continue;
+                    }
+                    MovieList.Remove (existingInfo);
+                }
+
                 MovieList.Add (info);
             }
+        }
+
+        private void CompleteFromDatabase (object sender, RoutedEventArgs args)
+        {
+
         }
 
         private DvdReader m_dvdReader;

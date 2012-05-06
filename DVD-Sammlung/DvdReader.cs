@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using DirectShowLib;
+using System.Runtime.InteropServices;
 
 namespace DvdCollection
 {
@@ -14,8 +16,8 @@ namespace DvdCollection
             List<string> files = new List<string> ();
             try
             {
-                files.AddRange (Directory.GetFiles (m_path, "*.avi", SearchOption.AllDirectories));
                 files.AddRange (Directory.GetFiles (m_path, "*.mpg", SearchOption.AllDirectories));
+                files.AddRange (Directory.GetFiles (m_path, "*.avi", SearchOption.AllDirectories));
             }
             catch
             {
@@ -36,15 +38,44 @@ namespace DvdCollection
             {
                 string dbRelevantTitle;
                 string movieTitle = GetTitleFromFileName (file, out dbRelevantTitle);
-                result.Add (new MovieInfo ()
+                MovieFileData fileData = GetMovieFileData (file);
+                result.Add (new MovieInfo (movieTitle, dvdLocation, fileData)
                 {
-                    Dvd = dvdLocation,
-                    Title = movieTitle,
                     DbRelevantTitle = dbRelevantTitle
                 });
             }
 
             return result;
+        }
+
+        private MovieFileData GetMovieFileData (string file)
+        {
+            try
+            {
+                Debug.WriteLine (string.Format ("Getting info for movie \"{0}\"", file));
+
+                FilterGraph graphbuilder = new FilterGraph ();
+                ((IGraphBuilder) graphbuilder).RenderFile (file, null);
+
+                int x;
+                int y;
+                long duration;
+                ((IBasicVideo) graphbuilder).GetVideoSize (out x, out y);
+                ((IMediaSeeking) graphbuilder).GetDuration (out duration);
+
+                Marshal.ReleaseComObject (graphbuilder);
+
+                return new MovieFileData ()
+                {
+                    X = x,
+                    Y = y,
+                    Duration = (double) duration / 6e8d
+                };
+            }
+            catch
+            {
+                return new MovieFileData () { Duration = double.NaN, X = -1, Y = -1 };
+            }
         }
 
         private string GetDvdLocationFromUser ()

@@ -40,8 +40,11 @@
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Left" Width="300">
-            <Button HorizontalAlignment="Center" Margin="8" Width="120" Click="AddDvdClick">
+            <Button HorizontalAlignment="Center" Margin="4,8,4,4" Width="120" Click="AddDvdClick">
                 DVD hinzufügen
+            </Button>
+            <Button HorizontalAlignment="Center" Margin="4" Width="120" Click="CompleteFromDatabase">
+                Von DB aktualisieren
             </Button>
         </StackPanel>
 
@@ -52,16 +55,20 @@
                                 ItemsSource="{Binding MovieList}">
             <local:SortableGridView.View>
                 <GridView ColumnHeaderTemplate="{StaticResource HeaderTemplateTransparent}">
-                    <local:SortableGridViewColumn Header="Titel" Width="Auto" 
+                    <local:SortableGridViewColumn Header="Titel" Width="300" 
                                                   DisplayMemberBinding="{Binding Title}"
                                                   SortPropertyName="Title" 
                                                   IsDefaultSortColumn="true" />
-                    <local:SortableGridViewColumn Header="Genres" Width="Auto" 
+                    <local:SortableGridViewColumn Header="Genres" Width="150" 
                                                   DisplayMemberBinding="{Binding Genres}"
                                                   SortPropertyName="Genres" 
                                                   IsDefaultSortColumn="false" />
-                    <GridViewColumn Header="Beschreibung" Width="Auto" 
+                    <GridViewColumn Header="Beschreibung" Width="300" 
                                     DisplayMemberBinding="{Binding Description}" />
+                    <local:SortableGridViewColumn Header="Bewertung [%]" Width="70" 
+                                                  DisplayMemberBinding="{Binding Rating}"
+                                                  SortPropertyName="Rating" 
+                                                  IsDefaultSortColumn="false" />
                     <GridViewColumn Header="Cover" Width="Auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -70,9 +77,15 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <local:SortableGridViewColumn Header="DVD" Width="Auto" 
+                    <local:SortableGridViewColumn Header="DVD" Width="70" 
                                                   DisplayMemberBinding="{Binding Dvd}"
                                                   SortPropertyName="Dvd" 
+                                                  IsDefaultSortColumn="false" />
+                    <GridViewColumn Header="Auflösung" Width="70" 
+                                    DisplayMemberBinding="{Binding Resolution}" />
+                    <local:SortableGridViewColumn Header="Dauer [min]" Width="70" 
+                                                  DisplayMemberBinding="{Binding Duration}"
+                                                  SortPropertyName="Duration" 
                                                   IsDefaultSortColumn="false" />
                 </GridView>
             </local:SortableGridView.View>
