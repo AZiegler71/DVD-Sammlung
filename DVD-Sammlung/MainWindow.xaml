@@ -4,6 +4,7 @@
         xmlns:local="clr-namespace:DvdCollection"
         Title="DVD-Sammlung" 
         SizeToContent="WidthAndHeight"
+        Background="#FFDDDDDD"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Window.Resources>
@@ -16,7 +17,7 @@
                       Data = "M 5,10 L 15,10 L 10,5 L 5,10"/>
             </DockPanel>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="HeaderTemplateArrowDown">
             <DockPanel>
                 <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
@@ -26,7 +27,7 @@
                       Data = "M 5,5 L 10,10 L 15,5 L 5,5"/>
             </DockPanel>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="HeaderTemplateTransparent">
             <DockPanel>
                 <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
@@ -44,7 +45,7 @@
                 DVD hinzufügen
             </Button>
         </StackPanel>
-        
+
         <local:SortableGridView Margin="8" MinWidth="300" MinHeight="200"
                                 ColumnHeaderSortedAscendingTemplate="HeaderTemplateArrowUp" 
                                 ColumnHeaderSortedDescendingTemplate="HeaderTemplateArrowDown"
@@ -56,14 +57,24 @@
                                                   DisplayMemberBinding="{Binding Title}"
                                                   SortPropertyName="Title" 
                                                   IsDefaultSortColumn="true" />
-                    <local:SortableGridViewColumn Header="Titel" Width="Auto" 
+                    <local:SortableGridViewColumn Header="Genres" Width="Auto" 
+                                                  DisplayMemberBinding="{Binding Genres}"
+                                                  SortPropertyName="Genres" 
+                                                  IsDefaultSortColumn="false" />
+                    <GridViewColumn Header="Beschreibung" Width="Auto" 
+                                    DisplayMemberBinding="{Binding Description}" />
+                    <GridViewColumn Header="Cover" Width="Auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding CoverPath}" Stretch="None" Margin="1"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <local:SortableGridViewColumn Header="Dvd" Width="Auto" 
                                                   DisplayMemberBinding="{Binding Dvd}"
                                                   SortPropertyName="Dvd" 
-                                                  IsDefaultSortColumn="true" />
-                    <local:SortableGridViewColumn Header="Titel" Width="Auto" 
-                                                  DisplayMemberBinding="{Binding Genre}"
-                                                  SortPropertyName="Genre" 
-                                                  IsDefaultSortColumn="true" />
+                                                  IsDefaultSortColumn="false" />
                 </GridView>
             </local:SortableGridView.View>
         </local:SortableGridView>

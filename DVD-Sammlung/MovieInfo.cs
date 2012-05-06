@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows.Controls;
 
 namespace DvdCollection
 {
@@ -32,16 +33,44 @@ namespace DvdCollection
             }
         }
 
-        private string m_genre;
-        public string Genre
+        private string m_genres;
+        public string Genres
         {
-            get { return m_genre; }
+            get { return m_genres; }
             set
             {
-                m_genre = value;
+                m_genres = value;
                 if (PropertyChanged != null)
                 {
-                    PropertyChanged (this, new PropertyChangedEventArgs ("Genre"));
+                    PropertyChanged (this, new PropertyChangedEventArgs ("Genres"));
+                }
+            }
+        }
+
+        private string m_coverPath;
+        public string CoverPath
+        {
+            get { return m_coverPath; }
+            set
+            {
+                m_coverPath = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged (this, new PropertyChangedEventArgs ("CoverPath"));
+                }
+            }
+        }
+
+        private string m_description;
+        public string Description
+        {
+            get { return m_description; }
+            set
+            {
+                m_description = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged (this, new PropertyChangedEventArgs ("Description"));
                 }
             }
         }

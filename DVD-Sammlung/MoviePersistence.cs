@@ -16,11 +16,11 @@ namespace DvdCollection
             return new List<MovieInfo> () { 
                 new MovieInfo ()
                 { 
-                    Title = "titel", Dvd = "2/01", Genre = "Ulk"
+                    Title = "titel", Dvd = "2/01", Genres = "Ulk", CoverPath=@"D:\Eigene Dateien Alex\Visual Studio Projects\DVD-Sammlung\DVD-Sammlung\bin\Debug\CoverImages\yfggfffgfhfhysfds.jpg", Description="Luschtiger Film!"
                 },
                 new MovieInfo ()
                 { 
-                    Title = "blabla", Dvd = "2/03", Genre = "Horror"
+                    Title = "blabla", Dvd = "2/03", Genres = "Horror", Description="Bäüsefilm"
                 }};
         }
     }
