@@ -11,10 +11,11 @@ namespace DvdCollection
         public List<MovieInfo> ReadDvd ()
         {
             EnsureDvdPathExists ();
-            string[] files = null;
+            List<string> files = new List<string> ();
             try
             {
-                files = Directory.GetFiles (m_path, "*.*", SearchOption.AllDirectories);
+                files.AddRange (Directory.GetFiles (m_path, "*.avi", SearchOption.AllDirectories));
+                files.AddRange (Directory.GetFiles (m_path, "*.mpg", SearchOption.AllDirectories));
             }
             catch
             {
@@ -23,7 +24,7 @@ namespace DvdCollection
                 return null;
             }
 
-            if (files.GetLength (0) == 0)
+            if (files.Count == 0)
             {
                 MessageBox.Show ("DVD ist leer...", "Keine Daten", MessageBoxButton.OK, MessageBoxImage.Information);
                 return null;
