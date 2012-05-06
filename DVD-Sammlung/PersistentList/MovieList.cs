@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace DvdCollection.PersistentList
 {
@@ -32,10 +33,28 @@ namespace DvdCollection.PersistentList
 
         public void ApplyFilter (string filterText)
         {
-            m_filterText = filterText == null ? string.Empty : filterText.ToLower ();
+            string newFilterText = filterText == null ? string.Empty : filterText.ToLower ();
+
+            // Try to speed up by reducing the number of items to search for
+            bool useFilteredListAsBase = string.IsNullOrEmpty (m_filterText) ? false : newFilterText.StartsWith (m_filterText);
+            m_filterText = newFilterText;
+
+            List<MovieInfo> filterBaseList;
+            if (useFilteredListAsBase)
+            {
+                filterBaseList = new List<MovieInfo> ();
+                foreach (MovieInfo info in this)
+                {
+                    filterBaseList.Add (info);
+                }
+            }
+            else
+            {
+                filterBaseList = m_fullList;
+            }
 
             base.Clear ();
-            foreach (MovieInfo info in m_fullList)
+            foreach (MovieInfo info in filterBaseList)
             {
                 if (m_filterText == string.Empty || FilterApplies (info))
                 {
