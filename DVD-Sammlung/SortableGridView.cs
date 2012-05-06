@@ -160,10 +160,15 @@ namespace DvdCollection
             ICollectionView dataView = CollectionViewSource.GetDefaultView (ItemsSource);
 
             dataView.SortDescriptions.Clear ();
-            SortDescription sd = new SortDescription (sortBy, direction);
-            dataView.SortDescriptions.Add (sd);
+            dataView.SortDescriptions.Add (new SortDescription (sortBy, direction));
+            if (sortBy != DEFAULT_SORT_ID)
+            {
+                dataView.SortDescriptions.Add (new SortDescription (DEFAULT_SORT_ID, ListSortDirection.Ascending));
+            }
             dataView.Refresh ();
         }
+
+        public static readonly string DEFAULT_SORT_ID = "Title";
 
         private SortableGridViewColumn m_lastSortedOnColumn = null;
         private ListSortDirection m_lastDirection = ListSortDirection.Ascending;

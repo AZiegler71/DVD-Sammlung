@@ -61,7 +61,7 @@
                 <GridView ColumnHeaderTemplate="{StaticResource HeaderTemplateTransparent}">
                     <local:SortableGridViewColumn Header="Titel" Width="300" 
                                                   DisplayMemberBinding="{Binding Title}"
-                                                  SortPropertyName="Title" 
+                                                  SortPropertyName="{x:Static local:SortableGridView.DEFAULT_SORT_ID}"
                                                   IsDefaultSortColumn="true" />
                     <local:SortableGridViewColumn Header="Genres" Width="150" 
                                                   DisplayMemberBinding="{Binding Genres}"
