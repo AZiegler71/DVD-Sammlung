@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using DirectShowLib;
+using DvdCollection.Properties;
 
 namespace DvdCollection
 {
@@ -98,13 +99,14 @@ namespace DvdCollection
         private string GetDvdNameFromUser (out bool aborted)
         {
             aborted = true;
-            AskMovieLocationDialog dialog = new AskMovieLocationDialog ();
+            SimpleTextInputDialog dialog = new SimpleTextInputDialog ("Ort", "DVD-Name:", Settings.Default.LastLocation);
             dialog.Owner = Application.Current.MainWindow;
             dialog.ShowDialog ();
             if (dialog.DialogResult == true)
             {
                 aborted = false;
-                return dialog.DvdName;
+                Settings.Default.LastLocation = dialog.Text;
+                return dialog.Text;
             }
 
             return null;

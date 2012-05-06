@@ -5,17 +5,17 @@ using System.Text;
 
 namespace DvdCollection.InfoRequest
 {
-    enum DegreeOfMatch
+    public enum DegreeOfMatch
     {
-        Exact,
-        NearlyExact,
-        Possible
+        Exact = 0,
+        NearlyExact = 1,
+        Possible = 2
     }
 
 
-    static class DegreeOfMatchHeaders
+    static class DegreeOfMatchText
     {
-        public static string GetHeader(DegreeOfMatch degree)
+        public static string GetWebPageHeader (DegreeOfMatch degree)
         {
             switch (degree)
             {
@@ -25,6 +25,21 @@ namespace DvdCollection.InfoRequest
                     return "Sehr &auml;hnliche Ergebnisse";
                 case DegreeOfMatch.Possible:
                     return "Ungef&auml;hre Ergebnisse";
+                default:
+                    throw new NotImplementedException ();
+            }
+        }
+
+        public static string GetText (DegreeOfMatch degree)
+        {
+            switch (degree)
+            {
+                case DegreeOfMatch.Exact:
+                    return "Exakt";
+                case DegreeOfMatch.NearlyExact:
+                    return "Sehr ähnlich";
+                case DegreeOfMatch.Possible:
+                    return "Ungefähr";
                 default:
                     throw new NotImplementedException ();
             }

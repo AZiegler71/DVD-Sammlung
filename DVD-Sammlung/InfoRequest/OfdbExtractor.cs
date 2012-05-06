@@ -21,8 +21,8 @@ namespace DvdCollection.InfoRequest
             MatchCollection matches = regex.Matches (htmlPage);
             foreach (Match match in matches)
             {
-                string movieName = match.Groups[2].Value;
-                string originalMovieName = match.Groups[3].Value;
+                string movieName = Utils.DecodeHtml (match.Groups[2].Value);
+                string originalMovieName = Utils.DecodeHtml (match.Groups[3].Value);
                 string relativeLink = match.Groups[1].Value;
                 string yearAsString = match.Groups[4].Value;
                 DegreeOfMatch degree = matchDegrees.First (x => x.Index < match.Index).Degree;
@@ -43,7 +43,7 @@ namespace DvdCollection.InfoRequest
             IList<MatchDegrees> result = new List<MatchDegrees> ();
             foreach (DegreeOfMatch degree in Enum.GetValues (typeof (DegreeOfMatch)))
             {
-                int index = htmlPage.IndexOf (DegreeOfMatchHeaders.GetHeader (degree));
+                int index = htmlPage.IndexOf (DegreeOfMatchText.GetWebPageHeader (degree));
                 if (index >= 0)
                     result.Add (new MatchDegrees (index, degree));
             }

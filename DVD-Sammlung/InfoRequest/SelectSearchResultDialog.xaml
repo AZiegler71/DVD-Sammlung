@@ -1,0 +1,53 @@
+﻿<Window x:Class="DvdCollection.InfoRequest.SelectSearchResultDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:DvdCollection"
+        Title="Auswahl passender Ergebnisse" 
+        Background="#FFDDDDDD"
+        WindowStartupLocation="CenterScreen"
+        Width="1150"
+        Height="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/DVD-Sammlung;component/Templates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <TextBlock Text="Film: " Margin="16" />
+            <TextBlock Text="{Binding MovieTitle}" Margin="16" />
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" 
+                    HorizontalAlignment="Right" Margin="0,24,0,16">
+            <Button Content="Abbrechen" IsCancel="True" Width="100" Height="24" Margin="8" />
+            <Button Content="OK" Name="okButton" Click="OkOnClick"  IsDefault="True" IsEnabled="false"
+                    Width="100" Height="24" Margin="8" />
+        </StackPanel>
+
+        <local:SortableGridView x:Name="gridView"
+                            ColumnHeaderSortedAscendingTemplate="HeaderTemplateArrowUp" 
+                            ColumnHeaderSortedDescendingTemplate="HeaderTemplateArrowDown"
+                            ColumnHeaderNotSortedTemplate="HeaderTemplateTransparent"
+                            ItemsSource="{Binding SearchResults}"
+                            MouseDoubleClick="MouseDoubleClick" SelectionChanged="GridViewSelectionChanged">
+            <local:SortableGridView.View>
+                <GridView ColumnHeaderTemplate="{StaticResource HeaderTemplateTransparent}">
+                    <GridViewColumn Header="Qualität" Width="100" 
+                                DisplayMemberBinding="{Binding Match}" />
+                    <GridViewColumn Header="Titel" Width="450" 
+                                DisplayMemberBinding="{Binding MovieName}" />
+                    <GridViewColumn Header="Originaltitle" Width="450" 
+                                DisplayMemberBinding="{Binding OriginalMovieName}" />
+                    <GridViewColumn Header="Jahr" Width="100" 
+                                DisplayMemberBinding="{Binding Year}" />
+                </GridView>
+            </local:SortableGridView.View>
+        </local:SortableGridView>
+    </DockPanel>
+</Window>

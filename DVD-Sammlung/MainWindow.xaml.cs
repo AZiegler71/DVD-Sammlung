@@ -142,7 +142,11 @@ namespace DvdCollection
         private void CompleteFromDatabase (object sender, RoutedEventArgs args)
         {
             InformationProvider infoProvider = new InformationProvider ();
-            infoProvider.CompleteFromDatabase (null);
+            foreach (var movie in Movies)
+            {
+                if (string.IsNullOrEmpty (movie.Genres))
+                    infoProvider.CompleteFromDatabase (movie);
+            }
         }
 
         private void CompareDbWithFolder (object sender, RoutedEventArgs args)

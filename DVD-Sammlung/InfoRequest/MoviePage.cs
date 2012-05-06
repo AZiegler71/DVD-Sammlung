@@ -1,7 +1,7 @@
 ﻿
 namespace DvdCollection.InfoRequest
 {
-    class MoviePage
+    public class MoviePage
     {
         public string MovieName { get; private set; }
 
