@@ -46,6 +46,7 @@ namespace DvdCollection
         private void MainWindowLoaded (object sender, RoutedEventArgs e)
         {
             m_dvdReader = new DvdReader ();
+            searchTextBox.Focus ();
         }
 
         private void AddDvdClick (object sender, RoutedEventArgs args)

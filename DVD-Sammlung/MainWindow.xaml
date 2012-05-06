@@ -60,7 +60,7 @@
         <DockPanel Margin="16" MinWidth="300">
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
                 <TextBlock Text="Suchen" Margin="0,0,8,0" />
-                <TextBox TextChanged="SearchTextChanged" Width="240" />
+                <TextBox Name="searchTextBox" TextChanged="SearchTextChanged" Width="240" />
             </StackPanel>
             <local:SortableGridView MinHeight="200" Margin="0,8,0,0"
                                     ColumnHeaderSortedAscendingTemplate="HeaderTemplateArrowUp" 
