@@ -19,6 +19,8 @@ namespace DvdCollection
             }
         }
 
+        public string DbRelevantTitle { get; set; }
+
         private string m_dvd;
         public string Dvd
         {

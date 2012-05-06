@@ -68,6 +68,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DvdReader.cs" />
     <Compile Include="MovieInfo.cs" />
     <Compile Include="MoviePersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

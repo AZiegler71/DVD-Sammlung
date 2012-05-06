@@ -41,7 +41,7 @@
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Left" Width="300">
-            <Button HorizontalAlignment="Center" Margin="8" Width="120">
+            <Button HorizontalAlignment="Center" Margin="8" Width="120" Click="AddDvdClick">
                 DVD hinzufügen
             </Button>
         </StackPanel>
@@ -71,7 +71,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <local:SortableGridViewColumn Header="Dvd" Width="Auto" 
+                    <local:SortableGridViewColumn Header="DVD" Width="Auto" 
                                                   DisplayMemberBinding="{Binding Dvd}"
                                                   SortPropertyName="Dvd" 
                                                   IsDefaultSortColumn="false" />

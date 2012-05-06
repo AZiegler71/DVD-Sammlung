@@ -30,7 +30,25 @@ namespace DvdCollection
 
             List<MovieInfo> movies = MoviePersistence.LoadMovies ();
             MovieList = new ObservableCollection<MovieInfo> (movies);
+
+            m_dvdReader = new DvdReader ();
         }
+
+        private void AddDvdClick (object sender, RoutedEventArgs args)
+        {
+            List<MovieInfo> newEntries = m_dvdReader.ReadDvd ();
+            if (newEntries == null)
+            {
+                return;
+            }
+
+            foreach (MovieInfo info in newEntries)
+            {
+                MovieList.Add (info);
+            }
+        }
+
+        private DvdReader m_dvdReader;
 
         #region INotifyPropertyChanged Members
 
