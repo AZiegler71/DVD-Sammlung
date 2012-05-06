@@ -34,6 +34,20 @@ namespace DvdCollection
             }
         }
 
+        private int? m_year;
+        public int? Year
+        {
+            get { return m_year; }
+            set
+            {
+                m_year = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged (this, new PropertyChangedEventArgs ("Year"));
+                }
+            }
+        }
+
         private string m_genres;
         public string Genres
         {

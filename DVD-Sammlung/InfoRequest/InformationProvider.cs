@@ -12,17 +12,33 @@ namespace DvdCollection.InfoRequest
     {
         public void CompleteFromDatabase (MovieInfo movieInfo)
         {
+            string searchTitle = movieInfo.Title;
+            IList<MoviePage> searchResults = TryFindPossibleMoviePages (ref searchTitle);
+            if (searchResults == null)
+                return;
+
+            MoviePage selectedResult = UserSelectSearchResult (searchTitle, searchResults.OrderBy (x => x.Match).ToList ());
+            if (selectedResult == null)
+                return;
+
+            movieInfo.Year = selectedResult.Year;
+            string detailsPage = GetMovieDetailsPage (selectedResult.RelativeLink);
+
+
+        }
+
+        private IList<MoviePage> TryFindPossibleMoviePages (ref string searchTitle)
+        {
+            IList<MoviePage> result;
             OfdbExtractor extractor = new OfdbExtractor ();
             bool tryWithCustomTitle;
-            IList<MoviePage> searchResults;
-            string searchTitle = movieInfo.Title;
             do
             {
                 tryWithCustomTitle = false;
 
                 string searchResultPage = GetSearchResultPage (searchTitle);
-                searchResults = extractor.ExtractSearchResults (searchResultPage);
-                if (searchResults.Count == 0)
+                result = extractor.ExtractSearchResults (searchResultPage);
+                if (result.Count == 0)
                 {
                     SimpleTextInputDialog dialog = new SimpleTextInputDialog ("Kein Fund",
                         "Alternativer Titel für Suche:", searchTitle);
@@ -35,21 +51,21 @@ namespace DvdCollection.InfoRequest
                     }
                     else
                     {
-                        return;
+                        result = null;
                     }
                 }
             } while (tryWithCustomTitle);
-
-            MoviePage selectedResult = UserSelectSearchResult (searchTitle, searchResults.OrderBy (x => x.Match).ToList ());
-            if (selectedResult == null)
-                return;
-
-
+            return result;
         }
 
         private string GetSearchResultPage (string title)
         {
             return DownloadPage (DB_HTTP_ROOT + "view.php?page=suchergebnis&SText=" + Utils.HttpPostMask (title));
+        }
+
+        private string GetMovieDetailsPage (string relativePath)
+        {
+            return DownloadPage (DB_HTTP_ROOT + relativePath);
         }
 
         private string DownloadPage (string address)

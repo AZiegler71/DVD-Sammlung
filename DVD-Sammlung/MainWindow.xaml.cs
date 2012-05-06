@@ -84,9 +84,7 @@ namespace DvdCollection
         {
             List<MovieInfo> newEntries = m_dvdReader.ReadDvd (false);
             if (newEntries == null)
-            {
                 return;
-            }
 
             foreach (MovieInfo info in newEntries)
             {
