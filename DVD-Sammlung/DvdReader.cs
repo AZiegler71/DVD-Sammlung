@@ -46,12 +46,8 @@ namespace DvdCollection
             List<MovieInfo> result = new List<MovieInfo> ();
             foreach (string file in files)
             {
-                string movieTitle = GetTitleFromFileName (file);
                 MovieFileData fileData = GetMovieFileData (file);
-                result.Add (new MovieInfo (movieTitle, dvdLocation, fileData)
-                {
-                    RawTitlePath = file
-                });
+                result.Add (new MovieInfo (file.Substring (m_path.Length), dvdLocation, fileData));
             }
 
             return result;
@@ -115,20 +111,6 @@ namespace DvdCollection
                 MessageBox.Show ("Applikation wird geschlossen");
                 Application.Current.MainWindow.Close ();
             }
-        }
-
-        private string GetTitleFromFileName (string filePath)
-        {
-            string fileName = Path.GetFileNameWithoutExtension (filePath);
-            string[] folders = (filePath.Substring (m_path.Length)).Split (new char[] { '\\' },
-                StringSplitOptions.RemoveEmptyEntries);
-            Debug.Assert (folders.GetLength (0) > 0, "No folders??!?");
-            if (folders.GetLength (0) == 1)
-            {
-                return fileName;
-            }
-
-            return folders[folders.GetLength (0) - 2] + "- " + fileName;
         }
 
         private string m_path;

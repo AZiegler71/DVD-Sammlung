@@ -62,7 +62,10 @@ namespace DvdCollection
                                           select x).FirstOrDefault ();
                 if (existingInfo != null)
                 {
-                    if (MessageBox.Show ("Es gibt schon einen Eintrag des Films \"{0}\" (DVD {1}).\n\nSoll der Eintrag überschrieben werden?",
+                    if (MessageBox.Show (string.Format ("Es gibt schon einen Eintrag des Films \"{0}\" (DVD {1}).\nBildgröße: {2}\nDauer: {3} Minuten\n\nSoll der Eintrag überschrieben werden?\nÜberschreiben mit:\nBildgröße: {4}\nDauer: {5} Minuten",
+                        existingInfo.Title, existingInfo.DvdName,
+                        existingInfo.Size, existingInfo.Duration,
+                        info.Size, info.Duration),
                         "Überschreiben?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                     {
                         continue;

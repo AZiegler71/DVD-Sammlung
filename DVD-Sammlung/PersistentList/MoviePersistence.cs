@@ -42,15 +42,14 @@ namespace DvdCollection.PersistentList
                                 Y = reader.GetInt32 (7)
                             };
 
-                            string title = reader.GetString (0);
+                            string rawTitlePath = reader.GetString (9);
                             string dvdName = reader.GetString (5);
-                            MovieInfo info = new MovieInfo (title, dvdName, fileData)
+                            MovieInfo info = new MovieInfo (rawTitlePath, dvdName, fileData)
                             {
                                 CoverImage = null,// BitmapSource.Create (reader.GetBytes (4))
                                 Description = reader.GetString (2),
                                 Genres = reader.GetString (1),
-                                Rating = reader.GetString (3),
-                                RawTitlePath = reader.GetString (9)
+                                Rating = reader.GetString (3)
                             };
 
                             result.Add (info);
@@ -77,7 +76,6 @@ namespace DvdCollection.PersistentList
                 {
                     using (FbCommand cmd = new FbCommand (commandText, connection, transaction))
                     {
-                        cmd.Parameters.Add (new FbParameter ("@title", movieInfo.Title));
                         cmd.Parameters.Add (new FbParameter ("@location", movieInfo.DvdName));
                         cmd.Parameters.Add (new FbParameter ("@file_data_x", movieInfo.FileData.X));
                         cmd.Parameters.Add (new FbParameter ("@file_data_y", movieInfo.FileData.Y));

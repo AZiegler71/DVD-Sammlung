@@ -85,8 +85,12 @@
                                                   DisplayMemberBinding="{Binding DvdName}"
                                                   SortPropertyName="DvdName" 
                                                   IsDefaultSortColumn="false" />
-                    <GridViewColumn Header="Auflösung" Width="70" 
-                                    DisplayMemberBinding="{Binding Resolution}" />
+                    <GridViewColumn Header="Bildgröße" Width="70" 
+                                    DisplayMemberBinding="{Binding Size}" />
+                    <local:SortableGridViewColumn Header="Auflösung [Pixel]" Width="70" 
+                                                  DisplayMemberBinding="{Binding Resolution}"
+                                                  SortPropertyName="Resolution" 
+                                                  IsDefaultSortColumn="false" />
                     <local:SortableGridViewColumn Header="Dauer [min]" Width="70" 
                                                   DisplayMemberBinding="{Binding Duration}"
                                                   SortPropertyName="Duration" 
