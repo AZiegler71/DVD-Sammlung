@@ -6,6 +6,8 @@
         Background="#FFDDDDDD"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
+        Width="1580"
+        Height="900"
         MinWidth="800"
         MinHeight="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
@@ -69,7 +71,7 @@
                                                   IsDefaultSortColumn="false" />
                     <GridViewColumn Header="Beschreibung" Width="300" 
                                     DisplayMemberBinding="{Binding Description}" />
-                    <local:SortableGridViewColumn Header="Bewertung [%]" Width="70" 
+                    <local:SortableGridViewColumn Header="Bewertung [%]" Width="100" 
                                                   DisplayMemberBinding="{Binding Rating}"
                                                   SortPropertyName="Rating" 
                                                   IsDefaultSortColumn="false" />
@@ -87,7 +89,7 @@
                                                   IsDefaultSortColumn="false" />
                     <GridViewColumn Header="Bildgröße" Width="70" 
                                     DisplayMemberBinding="{Binding Size}" />
-                    <local:SortableGridViewColumn Header="Auflösung [Pixel]" Width="70" 
+                    <local:SortableGridViewColumn Header="Auflösung [Px]" Width="100" 
                                                   DisplayMemberBinding="{Binding Resolution}"
                                                   SortPropertyName="Resolution" 
                                                   IsDefaultSortColumn="false" />

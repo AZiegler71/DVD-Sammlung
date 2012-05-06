@@ -17,6 +17,13 @@ namespace DvdCollection
 
         public List<MovieInfo> ReadDvd ()
         {
+            bool aborted;
+            string dvdLocation = GetDvdNameFromUser (out aborted);
+            if (aborted)
+            {
+                return null;
+            }
+
             List<string> files = new List<string> ();
             try
             {
@@ -33,13 +40,6 @@ namespace DvdCollection
             if (files.Count == 0)
             {
                 MessageBox.Show ("DVD ist leer...", "Keine Daten", MessageBoxButton.OK, MessageBoxImage.Information);
-                return null;
-            }
-
-            bool aborted;
-            string dvdLocation = GetDvdNameFromUser (out aborted);
-            if (aborted)
-            {
                 return null;
             }
 
