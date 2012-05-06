@@ -32,6 +32,11 @@ namespace DvdCollection
 
             InitializeComponent ();
 
+            Loaded += new RoutedEventHandler (MainWindowLoaded);
+        }
+
+        private void MainWindowLoaded (object sender, RoutedEventArgs e)
+        {
             m_dvdReader = new DvdReader ();
         }
 

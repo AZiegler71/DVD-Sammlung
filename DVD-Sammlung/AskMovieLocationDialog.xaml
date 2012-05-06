@@ -1,0 +1,20 @@
+﻿<Window x:Class="DvdCollection.AskMovieLocationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ort"
+        WindowStartupLocation="CenterScreen"
+        Background="#FFDDDDDD"
+        SizeToContent="WidthAndHeight">
+    
+    <StackPanel>
+        <DockPanel Margin="0,0,0,16">
+            <TextBlock DockPanel.Dock="Left" Text="DVD-Name:" Margin="8" />
+            <TextBox Height="19" Margin="8" Name="location" VerticalAlignment="Top" 
+                     TextChanged="LocationOnTextChanged" />
+        </DockPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,16">
+            <Button Content="Abbrechen" IsCancel="True" Width="100" Height="24" Margin="8" />
+            <Button Content="OK" Name="okButton" Click="OkOnClick" IsDefault="True" Width="100" Height="24" Margin="8" />
+        </StackPanel>
+    </StackPanel>
+</Window>

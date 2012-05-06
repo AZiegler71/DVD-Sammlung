@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
 using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace DvdCollection
 {
@@ -19,6 +21,8 @@ namespace DvdCollection
                 }
             }
         }
+
+        public string RawTitlePath { get; set; }
 
         private string m_genres;
         public string Genres
@@ -76,16 +80,16 @@ namespace DvdCollection
             }
         }
 
-        private string m_dvd;
-        public string Dvd
+        private string m_dvdName;
+        public string DvdName
         {
-            get { return m_dvd; }
+            get { return m_dvdName; }
             set
             {
-                m_dvd = value;
+                m_dvdName = value;
                 if (PropertyChanged != null)
                 {
-                    PropertyChanged (this, new PropertyChangedEventArgs ("Dvd"));
+                    PropertyChanged (this, new PropertyChangedEventArgs ("DvdName"));
                 }
             }
         }
@@ -115,13 +119,23 @@ namespace DvdCollection
             }
         }
 
-        public string DbRelevantTitle { get; set; }
-
-        public MovieInfo (string title, string dvd, MovieFileData fileData)
+        public MovieInfo (string title, string dvdName, MovieFileData fileData)
         {
             Title = title;
-            Dvd = dvd;
+            DvdName = dvdName;
             FileData = fileData;
+        }
+
+        public string GetDbRelevantTitle ()
+        {
+            string[] folders = RawTitlePath.Split (new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
+            Debug.Assert (folders.GetLength (0) > 0, "No folders??!?");
+            if (folders.GetLength (0) == 1)
+            {
+                return Title;
+            }
+
+            return folders[folders.GetLength (0) - 2];
         }
 
         #region INotifyPropertyChanged Members

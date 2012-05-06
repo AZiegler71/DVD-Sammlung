@@ -4,6 +4,10 @@
         xmlns:local="clr-namespace:DvdCollection"
         Title="DVD-Sammlung" 
         Background="#FFDDDDDD"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip"
+        MinWidth="800"
+        MinHeight="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Window.Resources>
@@ -40,19 +44,19 @@
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Left" Width="300">
-            <Button HorizontalAlignment="Center" Margin="4,8,4,4" Width="120" Click="AddDvdClick">
+            <Button HorizontalAlignment="Center" Margin="0,16,0,4" Width="120" Click="AddDvdClick">
                 DVD hinzufügen
             </Button>
-            <Button HorizontalAlignment="Center" Margin="4" Width="120" Click="CompleteFromDatabase">
+            <Button HorizontalAlignment="Center" Margin="0,4,0,16" Width="120" Click="CompleteFromDatabase">
                 Von DB aktualisieren
             </Button>
         </StackPanel>
 
-        <local:SortableGridView Margin="8" MinWidth="300" MinHeight="200"
+        <local:SortableGridView Margin="16" MinWidth="300" MinHeight="200"
                                 ColumnHeaderSortedAscendingTemplate="HeaderTemplateArrowUp" 
                                 ColumnHeaderSortedDescendingTemplate="HeaderTemplateArrowDown"
                                 ColumnHeaderNotSortedTemplate="HeaderTemplateTransparent"
-                                ItemsSource="{Binding MovieList}">
+                                ItemsSource="{Binding Movies}">
             <local:SortableGridView.View>
                 <GridView ColumnHeaderTemplate="{StaticResource HeaderTemplateTransparent}">
                     <local:SortableGridViewColumn Header="Titel" Width="300" 
@@ -78,7 +82,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <local:SortableGridViewColumn Header="DVD" Width="70" 
-                                                  DisplayMemberBinding="{Binding Dvd}"
+                                                  DisplayMemberBinding="{Binding DvdName}"
                                                   SortPropertyName="Dvd" 
                                                   IsDefaultSortColumn="false" />
                     <GridViewColumn Header="Auflösung" Width="70" 

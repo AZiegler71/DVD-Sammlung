@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows;
 using DirectShowLib;
-using System.Runtime.InteropServices;
 
 namespace DvdCollection
 {
     public class DvdReader
     {
+        public DvdReader ()
+        {
+            AskDvdPath ();
+        }
+
         public List<MovieInfo> ReadDvd ()
         {
-            EnsureDvdPathExists ();
             List<string> files = new List<string> ();
             try
             {
@@ -32,16 +36,21 @@ namespace DvdCollection
                 return null;
             }
 
-            string dvdLocation = GetDvdLocationFromUser ();
+            bool aborted;
+            string dvdLocation = GetDvdNameFromUser (out aborted);
+            if (aborted)
+            {
+                return null;
+            }
+
             List<MovieInfo> result = new List<MovieInfo> ();
             foreach (string file in files)
             {
-                string dbRelevantTitle;
-                string movieTitle = GetTitleFromFileName (file, out dbRelevantTitle);
+                string movieTitle = GetTitleFromFileName (file);
                 MovieFileData fileData = GetMovieFileData (file);
                 result.Add (new MovieInfo (movieTitle, dvdLocation, fileData)
                 {
-                    DbRelevantTitle = dbRelevantTitle
+                    RawTitlePath = file
                 });
             }
 
@@ -78,12 +87,36 @@ namespace DvdCollection
             }
         }
 
-        private string GetDvdLocationFromUser ()
+        private string GetDvdNameFromUser (out bool aborted)
         {
-            return "3/99";
+            aborted = true;
+            AskMovieLocationDialog dialog = new AskMovieLocationDialog ();
+            dialog.ShowDialog ();
+            if (dialog.DialogResult == true)
+            {
+                aborted = false;
+                return dialog.DvdName;
+            }
+
+            return null;
         }
 
-        private string GetTitleFromFileName (string filePath, out string dbRelevantTitle)
+        private void AskDvdPath ()
+        {
+            bool canceled;
+            string result = Utils.GetFolderFromUser ("DVD-Stammverzeichnis auswählen", out canceled);
+            if (!canceled)
+            {
+                m_path = result;
+            }
+            else
+            {
+                MessageBox.Show ("Applikation wird geschlossen");
+                Application.Current.MainWindow.Close ();
+            }
+        }
+
+        private string GetTitleFromFileName (string filePath)
         {
             string fileName = Path.GetFileNameWithoutExtension (filePath);
             string[] folders = (filePath.Substring (m_path.Length)).Split (new char[] { '\\' },
@@ -91,21 +124,10 @@ namespace DvdCollection
             Debug.Assert (folders.GetLength (0) > 0, "No folders??!?");
             if (folders.GetLength (0) == 1)
             {
-                dbRelevantTitle = fileName;
                 return fileName;
             }
 
-            dbRelevantTitle = folders[folders.GetLength (0) - 2];
-            return dbRelevantTitle + "- " + fileName;
-        }
-
-        private void EnsureDvdPathExists ()
-        {
-            if (m_path == null)
-            {
-                //m_path = @"F:\";
-                m_path = @"E:\___Videos zum Brennen";
-            }
+            return folders[folders.GetLength (0) - 2] + "- " + fileName;
         }
 
         private string m_path;

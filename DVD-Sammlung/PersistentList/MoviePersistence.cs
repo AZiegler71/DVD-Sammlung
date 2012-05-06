@@ -9,10 +9,6 @@ namespace DvdCollection.PersistentList
     /// </summary>
     internal static class MoviePersistence
     {
-        internal static void StoreMovies (List<MovieInfo> movieList)
-        {
-        }
-
         internal static List<MovieInfo> LoadMovies ()
         {
             if (!File.Exists (DB_FILENAME))
@@ -28,12 +24,10 @@ namespace DvdCollection.PersistentList
 
         internal static void Delete (MovieInfo movieInfo)
         {
-            throw new System.NotImplementedException ();
         }
 
         internal static void Add (MovieInfo movieInfo)
         {
-            throw new System.NotImplementedException ();
         }
 
         private static void CreateDatabase ()
@@ -74,12 +68,12 @@ namespace DvdCollection.PersistentList
                                 DESCRIPTION VARCHAR(1000),
                                 RATING VARCHAR(200), 
                                 COVER BLOB,
-                                DVD VARCHAR(100) NOT NULL,
+                                LOCATION VARCHAR(100) NOT NULL,
                                 FILE_DATA_X INTEGER NOT NULL,
                                 FILE_DATA_Y INTEGER NOT NULL,
                                 FILE_DATA_DURATION FLOAT NOT NULL,
-                                DB_RELEVANT_TITLE VARCHAR(200) NOT NULL,
-                                PRIMARY KEY (TITLE)
+                                RAW_TITLE_PATH VARCHAR(300) NOT NULL,
+                                PRIMARY KEY (RAW_TITLE_PATH, LOCATION)
                             );"
                 );
             return statements;
