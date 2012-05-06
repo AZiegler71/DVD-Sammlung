@@ -50,7 +50,7 @@ namespace DvdCollection
 
         private void AddDvdClick (object sender, RoutedEventArgs args)
         {
-            List<MovieInfo> newEntries = m_dvdReader.ReadDvd ();
+            List<MovieInfo> newEntries = m_dvdReader.ReadDvd (true);
             if (newEntries == null)
             {
                 return;
@@ -58,24 +58,53 @@ namespace DvdCollection
 
             foreach (MovieInfo info in newEntries)
             {
+                // Check for exact doubles
                 MovieInfo existingInfo = (from x in Movies
                                           where x.Title == info.Title
                                           select x).FirstOrDefault ();
                 if (existingInfo != null)
                 {
-                    if (MessageBox.Show (string.Format ("Es gibt schon einen Eintrag des Films \"{0}\" (DVD {1}).\nBildgröße: {2}\nDauer: {3} Minuten\n\nSoll der Eintrag überschrieben werden?\nÜberschreiben mit:\nBildgröße: {4}\nDauer: {5} Minuten",
-                        existingInfo.Title, existingInfo.DvdName,
-                        existingInfo.Size, existingInfo.Duration,
-                        info.Size, info.Duration),
+                    string existingMovieInfo = BuildInfoString (new List<MovieInfo> () { existingInfo });
+                    string newMovieInfo = BuildInfoString (new List<MovieInfo> () { info });
+                    if (MessageBox.Show (string.Format ("Es gibt schon einen Eintrag des Films\n{0}\n\nVorhandener Eintrag:\n{1}\n\nSoll der vorhandene Eintrag überschrieben werden?",
+                        newMovieInfo, existingMovieInfo),
                         "Überschreiben?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                     {
                         continue;
                     }
                     Movies.Remove (existingInfo);
                 }
+                else
+                {
+                    // Inform in case of potential doubles
+                    List<MovieInfo> maybeExistingInfos = (from x in Movies
+                                                          where x.Title.Contains (info.Title) || info.Title.Contains (x.Title)
+                                                          select x).ToList ();
+                    if (maybeExistingInfos.Count > 0)
+                    {
+                        string existingMovieInfos = BuildInfoString (maybeExistingInfos);
+                        string newMovieInfo = BuildInfoString (new List<MovieInfo> () { info });
+                        MessageBox.Show (string.Format ("Eventuell gibt es schon einen oder mehrere Einträge des Films\n{0}\n\nPotentielle Kandidaten:\n{1}\n\nLöschen Sie bitte eigenhändig eventuelle Einträge!",
+                            newMovieInfo, existingMovieInfos));
+                    }
+                }
 
                 Movies.Add (info);
             }
+        }
+
+        private string BuildInfoString (List<MovieInfo> infos)
+        {
+            List<string> result = new List<string> ();
+            foreach (MovieInfo info in infos)
+            {
+                result.Add (string.Format ("Titel: \"{0}\"\nBildgröße: {1}\nDauer: {2} Minuten",
+                    info.Title,
+                    info.Size,
+                    info.Duration));
+            }
+
+            return string.Join ("\n\n", result.ToArray ());
         }
 
         private void CompleteFromDatabase (object sender, RoutedEventArgs args)

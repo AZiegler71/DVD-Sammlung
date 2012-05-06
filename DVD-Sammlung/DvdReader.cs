@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -10,9 +9,25 @@ namespace DvdCollection
 {
     public class DvdReader
     {
-        public List<MovieInfo> ReadDvd ()
+        /// <summary>
+        /// Returns null if failed.
+        /// </summary>
+        /// <param name="closeAppWhenFailed">If true starts to close the application when no path was selected by the user.</param>
+        public List<MovieInfo> ReadDvd (bool closeAppWhenFailed)
         {
-            EnsureDvdPathExists ();
+            if (!EnsureDvdPathExists ())
+            {
+                if (closeAppWhenFailed)
+                {
+                    MessageBox.Show ("Applikation wird geschlossen");
+                    Application.Current.MainWindow.Close ();
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
 
             bool aborted;
             string dvdLocation = GetDvdNameFromUser (out aborted);
@@ -95,11 +110,11 @@ namespace DvdCollection
             return null;
         }
 
-        private void EnsureDvdPathExists ()
+        private bool EnsureDvdPathExists ()
         {
             if (m_path != null)
             {
-                return;
+                return true;
             }
 
             bool canceled;
@@ -107,12 +122,10 @@ namespace DvdCollection
             if (!canceled)
             {
                 m_path = result;
+                return true;
             }
-            else
-            {
-                MessageBox.Show ("Applikation wird geschlossen");
-                Application.Current.MainWindow.Close ();
-            }
+
+            return false;
         }
 
         private string m_path;
