@@ -72,7 +72,8 @@
   <ItemGroup>
     <Compile Include="DvdReader.cs" />
     <Compile Include="MovieInfo.cs" />
-    <Compile Include="MoviePersistence.cs" />
+    <Compile Include="PersistentList\MovieList.cs" />
+    <Compile Include="PersistentList\MoviePersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

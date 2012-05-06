@@ -1,31 +1,39 @@
 ﻿using System.Collections.Generic;
-using FirebirdSql.Data.FirebirdClient;
-using System.Collections;
-using System.Data;
-using System;
 using System.IO;
+using FirebirdSql.Data.FirebirdClient;
 
-namespace DvdCollection
+namespace DvdCollection.PersistentList
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public static class MoviePersistence
+    internal static class MoviePersistence
     {
-        public static void StoreMovies (List<MovieInfo> movieList)
+        internal static void StoreMovies (List<MovieInfo> movieList)
         {
         }
 
-        public static List<MovieInfo> LoadMovies ()
+        internal static List<MovieInfo> LoadMovies ()
         {
             if (!File.Exists (DB_FILENAME))
             {
                 CreateDatabase ();
+                return new List<MovieInfo> ();
             }
 
             //...
 
             return new List<MovieInfo> ();
+        }
+
+        internal static void Delete (MovieInfo movieInfo)
+        {
+            throw new System.NotImplementedException ();
+        }
+
+        internal static void Add (MovieInfo movieInfo)
+        {
+            throw new System.NotImplementedException ();
         }
 
         private static void CreateDatabase ()
@@ -35,7 +43,7 @@ namespace DvdCollection
 
             using (FbConnection connection = new FbConnection (connectionString))
             {
-                //connection.Open ();
+                connection.Open ();
                 RunStatements (connection, GetTableCreateStatementList ());
             }
         }
@@ -54,13 +62,13 @@ namespace DvdCollection
                 transaction.Commit ();
             }
         }
+
         private static List<string> GetTableCreateStatementList ()
         {
 
             List<string> statements = new List<string> ();
 
             statements.Add (@"CREATE TABLE MOVIE_DATA (
-                                ID INTEGER,
                                 TITLE VARCHAR(200) NOT NULL,
                                 GENRES VARCHAR(300),
                                 DESCRIPTION VARCHAR(1000),
@@ -71,7 +79,7 @@ namespace DvdCollection
                                 FILE_DATA_Y INTEGER NOT NULL,
                                 FILE_DATA_DURATION FLOAT NOT NULL,
                                 DB_RELEVANT_TITLE VARCHAR(200) NOT NULL,
-                                PRIMARY KEY (ID)
+                                PRIMARY KEY (TITLE)
                             );"
                 );
             return statements;

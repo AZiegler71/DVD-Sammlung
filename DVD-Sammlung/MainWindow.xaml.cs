@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
 using System.Linq;
+using System.Windows;
+using DvdCollection.PersistentList;
 
 namespace DvdCollection
 {
@@ -11,26 +11,26 @@ namespace DvdCollection
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private ObservableCollection<MovieInfo> m_movieList;
-        public ObservableCollection<MovieInfo> MovieList
+        private MovieList m_movies;
+        public MovieList Movies
         {
-            get { return m_movieList; }
+            get { return m_movies; }
             private set
             {
-                m_movieList = value;
+                m_movies = value;
                 if (PropertyChanged != null)
                 {
-                    PropertyChanged (this, new PropertyChangedEventArgs ("MovieList"));
+                    PropertyChanged (this, new PropertyChangedEventArgs ("Movies"));
                 }
             }
         }
 
         public MainWindow ()
         {
-            InitializeComponent ();
+            Movies = new MovieList ();
+            Movies.LoadAll ();
 
-            List<MovieInfo> movies = MoviePersistence.LoadMovies ();
-            MovieList = new ObservableCollection<MovieInfo> (movies);
+            InitializeComponent ();
 
             m_dvdReader = new DvdReader ();
         }
@@ -45,7 +45,7 @@ namespace DvdCollection
 
             foreach (MovieInfo info in newEntries)
             {
-                MovieInfo existingInfo = (from x in MovieList
+                MovieInfo existingInfo = (from x in Movies
                                           where x.Title == info.Title
                                           select x).FirstOrDefault ();
                 if (existingInfo != null)
@@ -55,16 +55,15 @@ namespace DvdCollection
                     {
                         continue;
                     }
-                    MovieList.Remove (existingInfo);
+                    Movies.Remove (existingInfo);
                 }
 
-                MovieList.Add (info);
+                Movies.Add (info);
             }
         }
 
         private void CompleteFromDatabase (object sender, RoutedEventArgs args)
         {
-
         }
 
         private DvdReader m_dvdReader;
