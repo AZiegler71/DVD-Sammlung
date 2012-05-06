@@ -21,14 +21,22 @@ namespace DvdCollection.PersistentList
         {
             MoviePersistence.Delete (movieInfo);
 
-            base.Remove (movieInfo);
+            if (base.Contains (movieInfo))
+            {
+                base.Remove (movieInfo);
+            }
             return m_fullList.Remove (movieInfo);
         }
 
         public new void Add (MovieInfo movieInfo)
         {
             MoviePersistence.Add (movieInfo);
-            base.Add (movieInfo);
+
+            if (FilterApplies (movieInfo))
+            {
+                base.Add (movieInfo);
+            }
+            m_fullList.Add (movieInfo);
         }
 
         public void ApplyFilter (string filterText)

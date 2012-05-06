@@ -62,11 +62,16 @@
                 <TextBlock Text="Suchen" Margin="0,0,8,0" />
                 <TextBox Name="searchTextBox" TextChanged="SearchTextChanged" Width="240" />
             </StackPanel>
-            <local:SortableGridView MinHeight="200" Margin="0,8,0,0"
+            <local:SortableGridView x:Name="gridView" MinHeight="200" Margin="0,8,0,0"
                                     ColumnHeaderSortedAscendingTemplate="HeaderTemplateArrowUp" 
                                     ColumnHeaderSortedDescendingTemplate="HeaderTemplateArrowDown"
                                     ColumnHeaderNotSortedTemplate="HeaderTemplateTransparent"
                                     ItemsSource="{Binding Movies}">
+                <local:SortableGridView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding DeleteCommand}" Header="Löschen" />
+                    </ContextMenu>
+                </local:SortableGridView.ContextMenu>
                 <local:SortableGridView.View>
                     <GridView ColumnHeaderTemplate="{StaticResource HeaderTemplateTransparent}">
                         <local:SortableGridViewColumn Header="Titel" Width="300" 

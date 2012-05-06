@@ -97,7 +97,26 @@ namespace DvdCollection.PersistentList
         }
 
         internal static void Delete (MovieInfo movieInfo)
-        {//new FirebirdSql.Data.FirebirdClient.FbCommandBuilder().
+        {
+            string commandText = @"DELETE FROM MOVIE_DATA
+                                    WHERE LOCATION = @location AND RAW_TITLE_PATH = @raw_title_path";
+
+            using (FbConnection connection = new FbConnection (string.Format (CONNECTION_STRING_FORMAT_FIREBIRD, DB_FILENAME)))
+            {
+                connection.Open ();
+
+                using (FbTransaction transaction = connection.BeginTransaction ())
+                {
+                    using (FbCommand cmd = new FbCommand (commandText, connection, transaction))
+                    {
+                        cmd.Parameters.Add (new FbParameter ("@location", movieInfo.DvdName));
+                        cmd.Parameters.Add (new FbParameter ("@raw_title_path", movieInfo.RawTitlePath));
+
+                        cmd.ExecuteNonQuery ();
+                    }
+                    transaction.Commit ();
+                }
+            }
         }
 
         internal static void Update (MovieInfo movieInfo)

@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using DvdCollection.PersistentList;
 using DvdCollection.Properties;
 
@@ -27,6 +29,20 @@ namespace DvdCollection
             }
         }
 
+        private CommandDelete m_deleteCommand;
+        public CommandDelete DeleteCommand
+        {
+            get { return m_deleteCommand; }
+            private set
+            {
+                m_deleteCommand = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged (this, new PropertyChangedEventArgs ("DeleteCommand"));
+                }
+            }
+        }
+
         public MainWindow ()
         {
             Movies = new MovieList ();
@@ -35,6 +51,7 @@ namespace DvdCollection
             InitializeComponent ();
 
             Loaded += new RoutedEventHandler (MainWindowLoaded);
+            DeleteCommand = new CommandDelete (gridView, Movies);
         }
 
         protected override void OnClosing (CancelEventArgs e)
@@ -127,6 +144,40 @@ namespace DvdCollection
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+    }
+
+
+
+    public class CommandDelete : ICommand
+    {
+        public CommandDelete (SortableGridView gridView, MovieList movies)
+        {
+            m_gridView = gridView;
+            m_movies = movies;
+        }
+
+        private SortableGridView m_gridView;
+        private MovieList m_movies;
+
+        #region ICommand Members
+
+        public bool CanExecute (object parameter)
+        {
+            return m_gridView.SelectedItems.Count > 0;
+        }
+
+        public event EventHandler CanExecuteChanged;
+
+        public void Execute (object parameter)
+        {
+            IList<MovieInfo> itemsToDelete = m_gridView.SelectedItems.Cast<MovieInfo> ().ToList ();
+            foreach (MovieInfo info in itemsToDelete)
+            {
+                m_movies.Remove (info);
+            }
+        }
 
         #endregion
     }
