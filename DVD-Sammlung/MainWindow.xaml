@@ -71,6 +71,7 @@
                 <local:SortableGridView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Command="{Binding DeleteCommand}" Header="Löschen" />
+                        <MenuItem Command="{Binding EditRawDataCommand}" Header="Rohdaten bearbeiten" />
                     </ContextMenu>
                 </local:SortableGridView.ContextMenu>
                 <local:SortableGridView.View>

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using DvdCollection.InfoRequest;
 using DvdCollection.PersistentList;
 using DvdCollection.Properties;
 
@@ -43,6 +42,20 @@ namespace DvdCollection
             }
         }
 
+        private CommandEditRawData m_editRawDataCommand;
+        public CommandEditRawData EditRawDataCommand
+        {
+            get { return m_editRawDataCommand; }
+            private set
+            {
+                m_editRawDataCommand = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged (this, new PropertyChangedEventArgs ("m_editRawDataCommand"));
+                }
+            }
+        }
+
         public MainWindow ()
         {
             Movies = new MovieList ();
@@ -52,6 +65,7 @@ namespace DvdCollection
 
             Loaded += new RoutedEventHandler (MainWindowLoaded);
             DeleteCommand = new CommandDelete (gridView, Movies);
+            EditRawDataCommand = new CommandEditRawData (gridView, Movies);
         }
 
         protected override void OnClosing (CancelEventArgs e)
@@ -127,6 +141,8 @@ namespace DvdCollection
 
         private void CompleteFromDatabase (object sender, RoutedEventArgs args)
         {
+            InformationProvider infoProvider = new InformationProvider ();
+            infoProvider.CompleteFromDatabase (null);
         }
 
         private void CompareDbWithFolder (object sender, RoutedEventArgs args)
@@ -144,40 +160,6 @@ namespace DvdCollection
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-    }
-
-
-
-    public class CommandDelete : ICommand
-    {
-        public CommandDelete (SortableGridView gridView, MovieList movies)
-        {
-            m_gridView = gridView;
-            m_movies = movies;
-        }
-
-        private SortableGridView m_gridView;
-        private MovieList m_movies;
-
-        #region ICommand Members
-
-        public bool CanExecute (object parameter)
-        {
-            return m_gridView.SelectedItems.Count > 0;
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute (object parameter)
-        {
-            IList<MovieInfo> itemsToDelete = m_gridView.SelectedItems.Cast<MovieInfo> ().ToList ();
-            foreach (MovieInfo info in itemsToDelete)
-            {
-                m_movies.Remove (info);
-            }
-        }
 
         #endregion
     }
